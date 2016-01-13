@@ -81,7 +81,11 @@ type Error struct {
 }
 
 func DisplayErrorResponse(err *ErrorsResponse) {
-	logger.Logger.Error(base_logger.NewContextMessage(err.Error(), err.Errors[0].Detail.(map[string]interface{})))
+	if err.Errors[0].Detail != nil {
+		logger.Logger.Error(base_logger.NewContextMessage(err.Error(), err.Errors[0].Detail.(map[string]interface{})))
+	} else {
+		logger.Logger.Error(err)
+	}
 }
 
 func GetErrorResponse(response *http.Response) *ErrorsResponse {

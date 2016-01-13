@@ -20,13 +20,17 @@ func init() {
 func main() {
 	switch config.Config.Command {
 	case config.DELETE:
-		api.Delete(*config.Config.Input["delete.repository"], *config.Config.Input["delete.tag"])
-		fmt.Printf("Image %s:%s removed\n", *config.Config.Input["delete.repository"], *config.Config.Input["delete.tag"])
+		api.Delete(
+			*config.Config.Input["delete.repository"].(*string),
+			*config.Config.Input["delete.tag"].(*string),
+			*config.Config.Input["delete.force"].(*bool),
+		)
+		fmt.Printf("Image %s:%s removed\n", *config.Config.Input["delete.repository"].(*string), *config.Config.Input["delete.tag"].(*string))
 	case config.TOKEN:
 		token, err := config.Config.TokenManager.GetToken(&http.AuthChallenge{
-			Service: *config.Config.Input["token.service"],
-			Realm:   *config.Config.Input["token.realm"],
-			Scope:   *config.Config.Input["token.scope"],
+			Service: *config.Config.Input["token.service"].(*string),
+			Realm:   *config.Config.Input["token.realm"].(*string),
+			Scope:   *config.Config.Input["token.scope"].(*string),
 		})
 		logger.Logger.CheckError(err)
 		fmt.Println("")
@@ -52,14 +56,15 @@ func main() {
 				if len(tagName) > sizes[1] {
 					sizes[1] = len(reposName)
 				}
-				manifest := api.GetManifest(reposName, tagName)
-				time := time.Time{}
-				time.UnmarshalText([]byte(manifest.History[len(manifest.History)-1].Unpack()["created"].(string)))
-				list[reposName] = append(list[reposName], &tag{
-					name: tagName,
-					size: api.GetSize(reposName, tagName),
-					time: time,
-				})
+				if manifest := api.GetManifest(reposName, tagName, false); manifest != nil {
+					time := time.Time{}
+					time.UnmarshalText([]byte(manifest.History[len(manifest.History)-1].Unpack()["created"].(string)))
+					list[reposName] = append(list[reposName], &tag{
+						name: tagName,
+						size: api.GetSize(reposName, tagName),
+						time: time,
+					})
+				}
 			}
 		}
 
@@ -92,10 +97,17 @@ func main() {
 		}
 
 	case config.SIZE:
-		size := api.GetSize(*config.Config.Input["size.repository"], *config.Config.Input["size.tag"])
+		size := api.GetSize(
+			*config.Config.Input["size.repository"].(*string),
+			*config.Config.Input["size.tag"].(*string),
+		)
 		fmt.Printf("\n%dMB\n", size/(1024*1024))
 	case config.HISTORY:
-		manifest := api.GetManifest(*config.Config.Input["history.repository"], *config.Config.Input["history.tag"])
+		manifest := api.GetManifest(
+			*config.Config.Input["history.repository"].(*string),
+			*config.Config.Input["history.tag"].(*string),
+			true,
+		)
 		if config.Config.Verbose { // Print json set to less
 			path, err := exec.LookPath("less")
 			logger.Logger.CheckError(err)
@@ -136,7 +148,7 @@ func main() {
 		}
 		fmt.Println("")
 	case config.TAGS:
-		tags := api.GetTags(*config.Config.Input["tag.repository"])
+		tags := api.GetTags(*config.Config.Input["tag.repository"].(*string))
 		if tags != nil {
 			fmt.Println("")
 			fmt.Printf("TAGS <%s>\n", tags.Name)

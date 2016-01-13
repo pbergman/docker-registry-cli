@@ -11,7 +11,7 @@ import (
 )
 
 func GetSize(repository, tag string) int {
-	manifest := GetManifest(repository, tag)
+	manifest := GetManifest(repository, tag, true)
 	var wg sync.WaitGroup
 	var size int
 	for _, layer := range manifest.FsLayers {

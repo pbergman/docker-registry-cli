@@ -69,7 +69,7 @@ func init() {
 	manifests = make(map[string]map[string]*Manifest, 0)
 }
 
-func GetManifest(repository, tag string) *Manifest {
+func GetManifest(repository, tag string, exit bool) *Manifest {
 	if manifest, ok := manifests[repository][tag]; ok {
 		return manifest
 	}
@@ -78,7 +78,10 @@ func GetManifest(repository, tag string) *Manifest {
 	req := http.NewRequest(url)
 	resp, err := req.Do()
 	logger.Logger.CheckError(err)
-	resp, err = resolve(resp, true)
+	resp, err = resolve(resp, exit)
+	if !exit && nil == resp {
+		return nil
+	}
 	body, err := ioutil.ReadAll(resp.Body)
 	logger.Logger.CheckError(err)
 	manifest := NewManifest()

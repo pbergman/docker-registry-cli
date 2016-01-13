@@ -14,7 +14,7 @@ type config struct {
 	TokenManager *token.Manager
 	Verbose      bool   `json:"verbose,omitempty"`
 	RegistryHost string `json:"registry-host"`
-	Input        map[string]*string
+	Input        map[string]interface{}
 	Command      int
 }
 
@@ -41,7 +41,7 @@ func newConfig() (*config, error) {
 
 	config := &config{
 		User:         newUser,
-		Input:        make(map[string]*string),
+		Input:        make(map[string]interface{}),
 		TokenManager: token.NewManager(newUser),
 	}
 
