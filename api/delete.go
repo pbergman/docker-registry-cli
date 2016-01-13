@@ -18,6 +18,4 @@ func Delete(repository, tag string) {
 	resp, err := req.Do()
 	resp, err = resolve(resp, true)
 	logger.Logger.CheckError(err)
-	_, err = ioutil.ReadAll(resp.Body)
-	logger.Logger.CheckError(err)
 }
