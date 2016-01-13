@@ -2,7 +2,6 @@ package api
 
 import (
 	"fmt"
-	"io/ioutil"
 
 	"github.com/pbergman/docker-registery-cli/config"
 	"github.com/pbergman/docker-registery-cli/http"
