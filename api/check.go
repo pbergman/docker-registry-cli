@@ -1,9 +1,9 @@
 package api
 
 import (
-	"github.com/pbergman/docker-registery-cli/config"
-	"github.com/pbergman/docker-registery-cli/http"
-	"github.com/pbergman/docker-registery-cli/logger"
+	"github.com/pbergman/docker-registry-cli/config"
+	"github.com/pbergman/docker-registry-cli/http"
+	"github.com/pbergman/docker-registry-cli/logger"
 )
 
 // ApiCheck will check if the server implements the registry api v2

@@ -3,11 +3,10 @@ package api
 import (
 	"fmt"
 	"sync"
-	//"strconv"
 
-	"github.com/pbergman/docker-registery-cli/config"
-	"github.com/pbergman/docker-registery-cli/http"
-	"github.com/pbergman/docker-registery-cli/logger"
+	"github.com/pbergman/docker-registry-cli/config"
+	"github.com/pbergman/docker-registry-cli/http"
+	"github.com/pbergman/docker-registry-cli/logger"
 )
 
 func Delete(repository, tag string, force bool) {
@@ -41,7 +40,6 @@ func Delete(repository, tag string, force bool) {
 		}
 		wg.Wait()
 	}
-
 
 	url := fmt.Sprintf("%s/v2/%s/manifests/%s", config.Config.RegistryHost, repository, manifest.Digest)
 	logger.Logger.Debug("Requesting DELETE for url: " + url)

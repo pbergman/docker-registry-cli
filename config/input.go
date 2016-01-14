@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/pbergman/docker-registery-cli/helpers"
+	"github.com/pbergman/docker-registry-cli/helpers"
 	"gopkg.in/alecthomas/kingpin.v2"
 	"os"
 	"regexp"

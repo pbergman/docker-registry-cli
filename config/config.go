@@ -2,9 +2,9 @@ package config
 
 import (
 	"encoding/json"
-	"github.com/pbergman/docker-registery-cli/account"
-	"github.com/pbergman/docker-registery-cli/logger"
-	"github.com/pbergman/docker-registery-cli/token"
+	"github.com/pbergman/docker-registry-cli/account"
+	"github.com/pbergman/docker-registry-cli/logger"
+	"github.com/pbergman/docker-registry-cli/token"
 	"os"
 	"os/user"
 )

@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"github.com/pbergman/docker-registery-cli/account"
-	"github.com/pbergman/docker-registery-cli/http"
-	"github.com/pbergman/docker-registery-cli/logger"
+	"github.com/pbergman/docker-registry-cli/account"
+	"github.com/pbergman/docker-registry-cli/http"
+	"github.com/pbergman/docker-registry-cli/logger"
 )
 
 type Manager struct {

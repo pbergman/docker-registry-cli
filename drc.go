@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/pbergman/docker-registery-cli/api"
-	"github.com/pbergman/docker-registery-cli/config"
-	"github.com/pbergman/docker-registery-cli/http"
-	"github.com/pbergman/docker-registery-cli/logger"
+	"github.com/pbergman/docker-registry-cli/api"
+	"github.com/pbergman/docker-registry-cli/config"
+	"github.com/pbergman/docker-registry-cli/http"
+	"github.com/pbergman/docker-registry-cli/logger"
 	"io"
 	"os"
 	"os/exec"

@@ -2,8 +2,8 @@ package http
 
 import (
 	"crypto/sha1"
-	"github.com/pbergman/docker-registery-cli/account"
-	"github.com/pbergman/docker-registery-cli/logger"
+	"github.com/pbergman/docker-registry-cli/account"
+	"github.com/pbergman/docker-registry-cli/logger"
 	"io"
 )
 
