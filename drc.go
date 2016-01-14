@@ -2,15 +2,15 @@ package main
 
 import (
 	"fmt"
+	"io"
+	"os"
+	"os/exec"
+	"time"
 	"github.com/pbergman/docker-registry-cli/api"
 	"github.com/pbergman/docker-registry-cli/config"
 	"github.com/pbergman/docker-registry-cli/http"
 	"github.com/pbergman/docker-registry-cli/logger"
-	"io"
-	"os"
-	"os/exec"
-	"strings"
-	"time"
+	"github.com/pbergman/docker-registry-cli/helpers"
 )
 
 func init() {
@@ -38,64 +38,32 @@ func main() {
 		fmt.Println(token.Token)
 		fmt.Println("")
 	case config.LIST:
-		type tag struct {
-			name string
-			size int
-			time time.Time
-		}
-		list := make(map[string][]*tag, 0)
-		sizes := make([]int, 2)
-		sizes[0] = len("REPOSITORY")
-		sizes[1] = len("TAG")
-		for _, reposName := range api.GetRepositories().Images {
-			if len(reposName) > sizes[0] {
-				sizes[0] = len(reposName)
-			}
-			tags := api.GetTags(reposName)
-			for _, tagName := range tags.Tags {
-				if len(tagName) > sizes[1] {
-					sizes[1] = len(reposName)
+		table := helpers.NewTable("REPOSITORY", "TAG", "DATE", "AUTHOR",  "SIZE(MB)")
+		list := api.GetList();
+		list.Sort()
+		for _, info := range *list {
+			for _, tag := range info.Tags {
+				manifest := api.GetManifest(info.Name, tag, true)
+				author := ""
+				for _,history :=  range manifest.History {
+					if value, exist := history.Unpack()["author"]; exist {
+						author = value.(string)
+						break
+					}
 				}
-				if manifest := api.GetManifest(reposName, tagName, false); manifest != nil {
-					time := time.Time{}
-					time.UnmarshalText([]byte(manifest.History[len(manifest.History)-1].Unpack()["created"].(string)))
-					list[reposName] = append(list[reposName], &tag{
-						name: tagName,
-						size: api.GetSize(reposName, tagName),
-						time: time,
-					})
-				}
-			}
-		}
 
-		pad := func(string, padding string, width int) string {
-			if left := width - len(string); left > 0 {
-				return string + strings.Repeat(padding, left)
-			}
-			return string
-		}
-
-		format := "2006-01-02 15:04:05.000000"
-
-		fmt.Printf(
-			"%s\t%s\t%s\tSIZE\n",
-			pad("REPOSITORY", " ", sizes[0]),
-			pad("TAG", " ", sizes[1]),
-			pad("DATE", " ", len(format)),
-		)
-
-		for repository, tags := range list {
-			for _, tag := range tags {
-				fmt.Printf(
-					"%s\t%s\t%s\t%dMB\n",
-					pad(repository, " ", sizes[0]),
-					pad(tag.name, " ", sizes[1]),
-					tag.time.Format(format),
-					tag.size/(1024*1024),
+				time := time.Time{}
+				time.UnmarshalText([]byte(manifest.History[len(manifest.History)-1].Unpack()["created"].(string)))
+				table.AddRow(
+					info.Name,
+					tag,
+					time.Format("2006-01-02 15:04:05.000000"),
+					author,
+					api.GetSize(info.Name, tag)/(1024*1024),
 				)
 			}
 		}
-
+		table.Print()
 	case config.SIZE:
 		size := api.GetSize(
 			*config.Config.Input["size.repository"].(*string),
