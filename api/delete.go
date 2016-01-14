@@ -20,7 +20,7 @@ func (b *blobList) has(blob string) bool {
 	return false
 }
 
-func (b *blobList) add(blob string){
+func (b *blobList) add(blob string) {
 	if false == b.has(blob) {
 		*b = append(*b, blob)
 	}
@@ -36,7 +36,7 @@ func Delete(repository, tag string, force bool) {
 				continue
 			}
 			wg.Add(1)
-			go func(list *blobList, repos, tag string){
+			go func(list *blobList, repos, tag string) {
 				manifests := GetManifest(repos, tag, true)
 				for _, blob := range manifests.FsLayers {
 					list.add(blob["blobSum"])

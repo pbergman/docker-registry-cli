@@ -2,10 +2,10 @@ package helpers
 
 import (
 	"fmt"
-	"strconv"
-	"strings"
 	"io"
 	"os"
+	"strconv"
+	"strings"
 )
 
 type Table struct {
@@ -16,7 +16,7 @@ type Table struct {
 func NewTable(header ...string) *Table {
 	return &Table{
 		Header: header,
-		Rows:	make([][]string, 0),
+		Rows:   make([][]string, 0),
 	}
 }
 
@@ -48,6 +48,7 @@ func (t *Table) pad(string, padding string, width int) string {
 	}
 	return string
 }
+
 // getSizes returns a slice with int`s representing
 // the max size of every column:
 // [3]int{5,8,7} so first column is 5 characters

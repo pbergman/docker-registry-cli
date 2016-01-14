@@ -15,7 +15,7 @@ func (l *RepositoryList) Get(name string) *RepositoryInfo {
 	return info
 }
 
-func (l RepositoryList) Sort(){
+func (l RepositoryList) Sort() {
 	sort.Sort(l)
 	for _, info := range l {
 		sort.Strings(info.Tags)
@@ -35,8 +35,8 @@ func (l RepositoryList) Less(i, j int) bool {
 }
 
 type RepositoryInfo struct {
-	Name  string
-	Tags  []string
+	Name string
+	Tags []string
 }
 
 func (l *RepositoryInfo) AddTag(tag string) {
@@ -49,7 +49,7 @@ func GetList() *RepositoryList {
 
 	for _, repository := range GetRepositories().Images {
 		for _, tag := range GetTags(repository).Tags {
-    		if manifest := GetManifest(repository, tag, false); manifest != nil {
+			if manifest := GetManifest(repository, tag, false); manifest != nil {
 				info := list.Get(repository)
 				info.AddTag(tag)
 			}

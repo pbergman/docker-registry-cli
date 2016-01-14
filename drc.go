@@ -2,15 +2,15 @@ package main
 
 import (
 	"fmt"
+	"github.com/pbergman/docker-registry-cli/api"
+	"github.com/pbergman/docker-registry-cli/config"
+	"github.com/pbergman/docker-registry-cli/helpers"
+	"github.com/pbergman/docker-registry-cli/http"
+	"github.com/pbergman/docker-registry-cli/logger"
 	"io"
 	"os"
 	"os/exec"
 	"time"
-	"github.com/pbergman/docker-registry-cli/api"
-	"github.com/pbergman/docker-registry-cli/config"
-	"github.com/pbergman/docker-registry-cli/http"
-	"github.com/pbergman/docker-registry-cli/logger"
-	"github.com/pbergman/docker-registry-cli/helpers"
 )
 
 func init() {
@@ -38,14 +38,14 @@ func main() {
 		fmt.Println(token.Token)
 		fmt.Println("")
 	case config.LIST:
-		table := helpers.NewTable("REPOSITORY", "TAG", "DATE", "AUTHOR",  "SIZE(MB)")
-		list := api.GetList();
+		table := helpers.NewTable("REPOSITORY", "TAG", "DATE", "AUTHOR", "SIZE(MB)")
+		list := api.GetList()
 		list.Sort()
 		for _, info := range *list {
 			for _, tag := range info.Tags {
 				manifest := api.GetManifest(info.Name, tag, true)
 				author := ""
-				for _,history :=  range manifest.History {
+				for _, history := range manifest.History {
 					if value, exist := history.Unpack()["author"]; exist {
 						author = value.(string)
 						break
@@ -117,7 +117,7 @@ func main() {
 	case config.TAGS:
 		tags := api.GetTags(*config.Config.Input["tag.repository"].(*string))
 		if tags != nil {
-			table := helpers.NewTable("TAGS(" + *config.Config.Input["tag.repository"].(*string)+ ")")
+			table := helpers.NewTable("TAGS(" + *config.Config.Input["tag.repository"].(*string) + ")")
 			for _, name := range tags.Tags {
 				table.AddRow(name)
 			}
