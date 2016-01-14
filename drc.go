@@ -109,21 +109,19 @@ func main() {
 
 	case config.REPOSITORIES:
 		repositories := api.GetRepositories()
-		fmt.Println("")
-		fmt.Println("REPOSITORIES")
+		table := helpers.NewTable("REPOSITORIES")
 		for _, name := range repositories.Images {
-			fmt.Println(name)
+			table.AddRow(name)
 		}
-		fmt.Println("")
+		table.Print()
 	case config.TAGS:
 		tags := api.GetTags(*config.Config.Input["tag.repository"].(*string))
 		if tags != nil {
-			fmt.Println("")
-			fmt.Printf("TAGS <%s>\n", tags.Name)
+			table := helpers.NewTable("TAGS(" + *config.Config.Input["tag.repository"].(*string)+ ")")
 			for _, name := range tags.Tags {
-				fmt.Println(name)
+				table.AddRow(name)
 			}
-			fmt.Println("")
+			table.Print()
 		}
 	}
 }
