@@ -36,7 +36,7 @@ func (config *config) ParseInput() {
 	}
 
 	// Global Config Command
-	app := kingpin.New("docker register", "A cli that can communicate with a docker private register.")
+	app := kingpin.New("drc", "A cli that can communicate with a docker private register.")
 	app.Flag("verbose", "Verbose mode.").Short('v').BoolVar(&config.Verbose)
 	app.Flag("username", "Username for login.").Short('u').StringVar(&config.User.Username)
 	app.Flag("password", "Password for login.").Short('p').StringVar(&config.User.Password)
