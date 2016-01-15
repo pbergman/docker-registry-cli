@@ -40,7 +40,7 @@ func (m *Manager) GetToken(c *http.AuthChallenge) (*Token, error) {
 	logger.Logger.Debug("Requesting new token")
 
 	response, err := http.Client.Do(c.GetRequest(m.user).Raw())
-
+	logger.Logger.CheckError(err)
 	logger.Logger.Debug(fmt.Sprintf("New token \"%x\"", hash))
 	logger.Logger.Debug("Status: " + response.Status)
 

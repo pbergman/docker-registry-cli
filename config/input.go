@@ -98,6 +98,6 @@ func (config *config) CheckUser() {
 	}
 
 	if config.User.Password == "" {
-		config.User.Password = helpers.Ask("password: ")
+		config.User.Password = helpers.Password("password: ")
 	}
 }

@@ -45,5 +45,5 @@ func (r *Request) SetBasicAuth(username, password string) {
 }
 
 func (r *Request) AddBearerToken(token string) {
-	r.request.Header.Set("Authorization", "Bearer "+token)
+	r.request.Header.Set("Authorization", "Bearer " + token)
 }

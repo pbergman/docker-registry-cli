@@ -51,7 +51,7 @@ func newConfig() (*config, error) {
 		return config, err
 	}
 
-	file := user.HomeDir + "/docker-registry/conf.json"
+	file := user.HomeDir + "/.docker-registry/conf.json"
 
 	if _, err := os.Stat(file); !os.IsNotExist(err) {
 

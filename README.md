@@ -29,9 +29,9 @@ configured with token authentication and docker registry 2.1 but it should work 
 
 ####Commands:
 
-When the application is started it will check if there is config file in the $HOME/docker-registry folder. here you can
-define the registry host, username, password and verbosity. Password can be left out anf the application will aks for it
-while verifying the api.
+When the application is started it will check if there is config file in the $HOME/.docker-registry/conf.json folder. 
+here you can define the registry host, username, password and verbosity. Password can be left out anf the application 
+will aks for it while verifying the api.
 
 #####Example:
 
