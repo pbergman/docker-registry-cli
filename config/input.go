@@ -61,7 +61,7 @@ func (config *config) ParseInput() {
 	delete := app.Command("delete", "Delete tagged repository")
 	config.Input["delete.repository"] = delete.Arg("repository", "Repository to fetch tags from.").Required().String()
 	config.Input["delete.tag"] = delete.Arg("tag", "Tag of repository").Default("latest").String()
-	config.Input["delete.force"] = delete.Flag("force", "Remove also blobs.").Bool()
+	config.Input["delete.dry"] = delete.Flag("dry-run", "Check which layers are getting queues for remooval").Bool()
 
 	// Size Command
 	size := app.Command("size", "Get size infomation from given repository.")

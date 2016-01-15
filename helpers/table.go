@@ -32,6 +32,8 @@ func (t *Table) AddRow(data ...interface{}) {
 		switch d.(type) {
 		case int:
 			row[i] = strconv.Itoa(d.(int))
+		case bool:
+			row[i] = fmt.Sprintf("%t", d)
 		case string:
 			row[i] = d.(string)
 		default:

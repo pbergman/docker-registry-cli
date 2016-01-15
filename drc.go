@@ -23,9 +23,11 @@ func main() {
 		api.Delete(
 			*config.Config.Input["delete.repository"].(*string),
 			*config.Config.Input["delete.tag"].(*string),
-			*config.Config.Input["delete.force"].(*bool),
+			*config.Config.Input["delete.dry"].(*bool),
 		)
-		fmt.Printf("Image %s:%s removed\n", *config.Config.Input["delete.repository"].(*string), *config.Config.Input["delete.tag"].(*string))
+		if true != *config.Config.Input["delete.dry"].(*bool) {
+			fmt.Printf("Image %s:%s removed\n", *config.Config.Input["delete.repository"].(*string), *config.Config.Input["delete.tag"].(*string))
+		}
 	case config.TOKEN:
 		token, err := config.Config.TokenManager.GetToken(&http.AuthChallenge{
 			Service: *config.Config.Input["token.service"].(*string),
